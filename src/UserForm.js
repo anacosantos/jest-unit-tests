@@ -8,6 +8,9 @@ function UserForm({ onUserAdd }) {
     event.preventDefault();
 
     onUserAdd({ name, email });
+    //those will be empty after fill outand press button 
+    setName('');
+    setEmail('');
   };
 
   return (
