@@ -1,6 +1,6 @@
 
 
-import {render, screen } from '@testing-libary/react';
+import {render, screen } from '@testing-library/react';
 
 function RoleExample() {
   return (
