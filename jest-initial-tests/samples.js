@@ -283,3 +283,107 @@ test('favor find or findAllBy when data fetching', async() => {
 
   expect(els).toHaveLength(3)
 })
+
+/////////////////////////////////////////////////////
+
+//import { render, screen } from '@testing-library/react';
+
+function DataForm() {
+  const [email, setEmail] = useState('asdf@asdf.com');
+
+  return (
+   <form>
+   <h3>Enter Data</h3>
+
+   <div data-testid="image wrapper">
+    <img alt="data" src="data.jpg" />
+   </div>
+
+   <label htmlFor="email">Email</label>
+   <input
+    id="email"
+    value={email}
+    onChange={e => setEmail(e.taget.value)}
+   />
+
+  <label htmlFor="email">Color</label>
+  <input id="color" placeholder="Red" />
+  <button title="Click when ready to submit">Submit</button>
+
+   </form>
+  );
+}
+
+render(<DataForm />)
+
+/////////////////////////////////////////////////////////////////////////
+
+test('selecting different elements', () => {
+  render(<DataForm />)
+
+  const elements = [
+    screen.getByRole('button'),
+    screen.getByLabelText(/email/i),
+    screen.getByPlaceholderText(/red/i),
+    screen.getByText(/enter data/i),
+    screen.getByDisplayValue('asdf@asdf.com'),
+    screen.getByAltText(/data/i),
+    screen.getByTitle(/click when ready to submit/i),
+    screen.getByTestId('image wrapper')
+  ];
+
+  for (let element of elements) {
+    expect(element).toBeInTheDocument();
+  }
+});
+
+/////////////////////////////////////////////////////////
+//import { render, screen, within } from '@testing-library/react';
+
+function FormData() {
+  return (
+    <div>
+      <button>Go Back</button>
+      <form aria-label="form">
+      <button>Save</button>
+      <button>Cancel</button>
+      </form>
+    </div>
+  )
+}
+render(<FormData />);
+
+///////////////////////////////////////////////////
+function toContainRole(container, role, quantity=1) {
+  // eslint-disable-next-line no-undef
+  const elements = within(container).queryAllByRole(role);
+
+  if(elements.length === quantity) {
+    return {
+      pass:true
+    };
+  }
+
+  return {
+    pass: false,
+    message: () => `Expected to find ${quantity} ${role} elements. Found ${elements.length} instead.`
+  }
+}
+
+expect.extend({ toContainRole});
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+test('the form displays two buttons into form', () => {
+  render(<FormData />);
+
+  const form = screen.getByRole('form');
+  //const buttons = within(form).getAllByRole('button');
+
+  //for(button of buttons) {
+   // expect(button).toBeInTheDocument()
+  //}
+
+  //expect(buttons).toHaveLength(2)
+  expect(form).toContainRole('button', 2)
+})
