@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
 import FileIcon from '../tree/FileIcon';
+import { MarkGithubIcon } from '@primer/octicons-react';
 import RepositoriesSummary from './RepositoriesSummary';
 
 function RepositoriesListItem({ repository }) {
   const { full_name, language, description, owner, name } = repository;
-
+  console.log(repository, 'list')
   return (
     <div className="py-3 border-b flex">
       <FileIcon name={language} className="shrink w-6 pt-1" />
@@ -14,8 +15,13 @@ function RepositoriesListItem({ repository }) {
         </Link>
         <p className="text-gray-500 italic py-1">{description}</p>
         <RepositoriesSummary repository={repository} />
-      </div>
-    </div>
+        </div>
+        <div className="grow flex items-center justify-end pr-2">
+          <a href={repository.html_url} aria-label="github repository">
+            <MarkGithubIcon />
+          </a>
+        </div>
+      </div>    
   );
 }
 
